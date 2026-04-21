@@ -6,3 +6,6 @@ venv/
 .idea/
 .vscode/
 mlruns/
+mlartifacts/
+mlflow.db
+*.db

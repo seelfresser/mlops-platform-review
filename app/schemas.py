@@ -13,3 +13,4 @@ class PredictResponse(BaseModel):
 class InfoResponse(BaseModel):
     model_name: str
     model_version: str
+    

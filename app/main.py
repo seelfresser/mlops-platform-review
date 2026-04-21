@@ -7,7 +7,7 @@ from fastapi import FastAPI, BackgroundTasks
 
 from app.schemas import PredictRequest, PredictResponse, InfoResponse
 from app.config import settings
-from app.db import SessionLocal, ModelResult, init_db
+from app.db import SessionLocal, ModelResult
 
 
 class AppState:
@@ -24,10 +24,7 @@ async def lifespan(app: FastAPI):
     model_uri = f"models:/{settings.model_name}/{settings.model_version}"
     state.model = mlflow.pyfunc.load_model(model_uri)
 
-    init_db()
     yield
-
-    state.model = None
 
 
 app = FastAPI(title="MLOps Platform", lifespan=lifespan)
@@ -52,8 +49,8 @@ def save_result_to_db(features: list[float], prediction_int: int):
 @app.get("/info", response_model=InfoResponse)
 def get_info():
     return InfoResponse(
-        model_name=MODEL_NAME,
-        model_version=MODEL_VERSION
+        model_name=settings.model_name,
+        model_version=settings.model_version
     )
 
 
